@@ -26,12 +26,18 @@ from PyPDF2 import PdfReader
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Set NLTK data path for serverless environments (Vercel/Lambda)
+nltk_data_path = os.path.join('/tmp', 'nltk_data')
+if not os.path.exists(nltk_data_path):
+    os.makedirs(nltk_data_path, exist_ok=True)
+nltk.data.path.append(nltk_data_path)
+
 # Download NLTK data on first run
-for pkg in ['punkt', 'stopwords', 'averaged_perceptron_tagger']:
+for pkg in ['punkt', 'stopwords', 'averaged_perceptron_tagger', 'punkt_tab']:
     try:
         nltk.data.find(f'tokenizers/{pkg}')
     except LookupError:
-        nltk.download(pkg, quiet=True)
+        nltk.download(pkg, download_dir=nltk_data_path, quiet=True)
 
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
