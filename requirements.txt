@@ -1,0 +1,22 @@
+# ResumeIQ — Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Web framework
+flask==3.0.3
+flask-cors==4.0.1
+
+# NLP core
+nltk==3.8.1
+spacy==3.8.2
+
+# ML / similarity
+scikit-learn==1.3.2
+numpy>=1.26.0,<1.27
+PyPDF2==3.0.0
+
+# Anthropic (optional — enables Claude AI analysis)
+anthropic==0.28.0
+
+# Utilities
+python-dotenv==1.0.1
+gunicorn==21.2.0

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: resumeiq
+    runtime: python
+    rootDir: .
+    buildCommand: ./build.sh
+    startCommand: gunicorn --bind 0.0.0.0:$PORT app:app
+    envVars:
+      - key: PORT
+        generateValue: true
+      - key: ANTHROPIC_API_KEY
+        sync: false  # Set this in Render dashboard
