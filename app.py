@@ -16,8 +16,11 @@ import re
 import string
 from collections import Counter
 
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
+
+load_dotenv()
 
 # NLP
 import nltk
@@ -32,11 +35,18 @@ if not os.path.exists(nltk_data_path):
     os.makedirs(nltk_data_path, exist_ok=True)
 nltk.data.path.append(nltk_data_path)
 
-# Download NLTK data on first run
-for pkg in ['punkt', 'stopwords', 'averaged_perceptron_tagger', 'punkt_tab']:
+# Download NLTK data on first run. Each package lives under a different
+# resource directory, and a stale Windows cache can raise OSError here.
+nltk_resources = {
+    'punkt': 'tokenizers/punkt',
+    'stopwords': 'corpora/stopwords',
+    'averaged_perceptron_tagger': 'taggers/averaged_perceptron_tagger',
+    'punkt_tab': 'tokenizers/punkt_tab',
+}
+for pkg, resource in nltk_resources.items():
     try:
-        nltk.data.find(f'tokenizers/{pkg}')
-    except LookupError:
+        nltk.data.find(resource)
+    except (LookupError, OSError):
         nltk.download(pkg, download_dir=nltk_data_path, quiet=True)
 
 from nltk.corpus import stopwords
